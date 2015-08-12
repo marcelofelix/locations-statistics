@@ -31,7 +31,7 @@ module.exports = function(config) {
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/angular-bootstrap-grid-tree/src/tree-grid-directive.js',
-      'bower_components/angular-growl/build/angular-growl.js',
+      'bower_components/angular-growl-v2/build/angular-growl.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",
