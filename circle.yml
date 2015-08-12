@@ -3,6 +3,7 @@ machine:
     version: oraclejdk8
   services:
     - docker
+    - mongodb
   environment:
     AWS_DEFAULT_REGION: us-west-1 
     SBT_VERSION: 0.13.8
