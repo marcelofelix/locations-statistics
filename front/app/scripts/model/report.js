@@ -16,10 +16,10 @@ app.factory('reportModel', function($http, ReportService, growl) {
 		schedule: function() {
 			return ReportService.schedule()
 				.then(function() {
-					growl.addSuccessMessage('Relatório criado com sucesso!');
+					growl.success('Relatório criado com sucesso!');
 					return that.loadReports();
 				}, function() {
-					growl.addErrorMessage('Não foi possível criar um relatório');
+					growl.error('Não foi possível criar um relatório');
 				});
 		}
 	};
