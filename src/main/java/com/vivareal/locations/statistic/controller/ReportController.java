@@ -9,6 +9,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -64,7 +65,6 @@ public class ReportController {
 		} else if (!report.isReady()) {
 			throw new ReportResultNotReady();
 		}
-		report.incVersion();
 		report.setStatus(QUEUED);
 		reportRepository.save(report);
 		return new ReportDTO(report);
@@ -78,6 +78,11 @@ public class ReportController {
 		report.setStatus(QUEUED);
 		reportRepository.save(report);
 		return new ReportDTO(report);
+	}
+
+	@Scheduled(cron = "0 0 0 * * 1,5")
+	public void automaticSchedule() {
+		schedule();
 	}
 
 }

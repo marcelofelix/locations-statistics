@@ -30,7 +30,7 @@ app.factory('ReportService', function($http, $q) {
 		},
 
 		process: function(id) {
-			return $http.post('report/' + id + '/process')
+			return $http.post('report/' + id + '/schedule')
 				.then({}, function(error) {
 					return $q.reject(error.data);
 				});
