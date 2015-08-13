@@ -3,6 +3,7 @@ package com.vivareal.locations.statistic.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
@@ -51,12 +52,26 @@ public class Report {
 		this.status = status;
 	}
 
-	public String getExtractedDataFileName() {
+	public String getFileName() {
 		return "report-" + id + ".csv";
+	}
+
+	public String getFileZipName() {
+		return "report-" + id + ".zip";
 	}
 
 	public boolean isReady() {
 		return Status.READY.equals(status);
+	}
+
+	public void compareWith(Report last) {
+		result.forEach(n -> {
+			Optional<Node> node = last.result.stream().filter(n2 -> n.getName().equals(n2.getName())).findFirst();
+			if (node.isPresent()) {
+				n.compareWith(node.get());
+			}
+		});
+
 	}
 
 	@Override

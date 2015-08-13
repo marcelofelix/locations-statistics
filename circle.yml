@@ -16,6 +16,7 @@ dependencies:
     - cd front/ && npm install
     - cd front/ && bower install
     - gem install compass
+    - mvn compile
     # - sudo service docker stop; sudo curl -L -o /usr/bin/docker 'http://s3-external-1.amazonaws.com/circle-downloads/docker-1.6.0-circleci'; sudo chmod 0755 /usr/bin/docker; sudo service docker start; true
     # - curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
     # - unzip awscli-bundle.zip

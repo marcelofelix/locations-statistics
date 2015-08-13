@@ -18,9 +18,15 @@ public class Node implements Comparable<Node> {
 	private Integer value;
 	private Long percent;
 	private List<Node> children = new ArrayList<>();
+	private Long diff = 0l;
 
 	public Node() {
 		super();
+	}
+
+	public Node(String name) {
+		super();
+		this.name = name;
 	}
 
 	public Node(Cell cell) {
@@ -72,12 +78,37 @@ public class Node implements Comparable<Node> {
 		this.children = children;
 	}
 
+	public Long getDiff() {
+		return diff;
+	}
+
 	@Override
 	public int compareTo(Node o) {
 		if (value != null && o.value != null) {
 			return o.value.compareTo(value);
 		}
 		return 0;
+	}
+
+	private Node getChildByName(String name) {
+		return children.stream().filter(n -> n.getName().equals(name)).findFirst().orElse(null);
+	}
+
+	public void compareWith(Node node) {
+		if (percent != null && node.percent != null) {
+			diff = percent - node.percent;
+			children.forEach(c -> {
+				Node child = node.getChildByName(c.getName());
+				if (child != null) {
+					c.compareWith(child);
+				}
+			});
+		}
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 
 }

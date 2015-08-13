@@ -15,4 +15,6 @@ public interface ReportRepository extends MongoRepository<Report, String> {
 
 	int countByStatus(Status processing);
 
+	Report findFirstByStatusOrderByDateAsc(Status status);
+
 }

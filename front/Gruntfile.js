@@ -12,7 +12,6 @@ module.exports = function(grunt) {
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
   grunt.loadNpmTasks('grunt-connect-proxy');
-  grunt.loadNpmTasks('grunt-ng-constant');
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
@@ -24,16 +23,7 @@ module.exports = function(grunt) {
   };
 
   // Define the configuration for all the tasks
-  grunt.initConfig({
-    ngconstant: {
-      options: {
-        name: 'locationApp',
-        dest: 'dist/config.js',
-        constants: {
-          path:'api/'
-        }
-      }
-    },
+  grunt.initConfig({    
     // Project settings
     yeoman: appConfig,
 
@@ -82,14 +72,11 @@ module.exports = function(grunt) {
         livereload: 35729
       },
       proxies: [{
-        context: '/api',
+        context: '/report',
         host: 'localhost',
         port: 8080,
         https: false,
         xforward: false,
-        rewrite: {
-          '^/api': ''
-        }
       }],
       livereload: {
         options: {

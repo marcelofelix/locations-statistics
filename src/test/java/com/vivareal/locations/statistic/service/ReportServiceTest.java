@@ -1,6 +1,7 @@
 package com.vivareal.locations.statistic.service;
 
 import static com.vivareal.locations.statistic.builders.ReportBuilder.report;
+import static com.vivareal.locations.statistic.model.Status.PROCESSING;
 import static com.vivareal.locations.statistic.model.Status.QUEUED;
 import static com.vivareal.locations.statistic.model.Status.READY;
 import static org.hamcrest.Matchers.equalTo;
@@ -27,6 +28,15 @@ public class ReportServiceTest extends AbstractControllerTest {
 	private ReportRepository repository;
 
 	@Test
+	public void testInit() {
+		report().status(PROCESSING);
+		report().status(PROCESSING);
+		report().status(PROCESSING);
+		service.init();
+		assertThat(repository.findByStatus(QUEUED), hasSize(0));
+	}
+
+	@Test
 	public void testExtractData() throws Exception {
 		ReportBuilder report = report();
 		saveAll();
@@ -37,7 +47,7 @@ public class ReportServiceTest extends AbstractControllerTest {
 	public void testProcessReport() throws Exception {
 		Report report = report().status(QUEUED).get();
 		saveAll();
-		storage.copy(getFile("report.csv"), report.getExtractedDataFileName());
+		storage.copy(getFile("report.csv"), report.getFileName());
 		assertThat(repository.findOne(report.getId()).getStatus(), equalTo(QUEUED));
 		service.processReports(report);
 
@@ -49,7 +59,7 @@ public class ReportServiceTest extends AbstractControllerTest {
 		ReportBuilder report = report().status(QUEUED);
 		report().status(QUEUED);
 		saveAll();
-		storage.copy(getFile("report.csv"), report.get().getExtractedDataFileName());
+		storage.copy(getFile("report.csv"), report.get().getFileName());
 
 		service.processQueuedReport();
 		assertThat(repository.findByStatus(QUEUED), hasSize(1));
