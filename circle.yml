@@ -28,7 +28,9 @@ test:
     - grunt build --gruntfile front/Gruntfile.js
     - mvn clean install
     
-
+general:
+  artifacts:
+    - target/location-statistics.jar
 # deployment:  
 #   hub:    
 #     branch: master
