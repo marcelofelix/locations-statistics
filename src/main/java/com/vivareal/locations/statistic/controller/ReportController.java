@@ -3,12 +3,12 @@ package com.vivareal.locations.statistic.controller;
 import static com.vivareal.locations.statistic.model.Status.QUEUED;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -55,9 +55,24 @@ public class ReportController {
 		return report.getResult();
 	}
 
+	@RequestMapping(value = "/{id}/schedule", method = POST)
+	@ResponseStatus(value = OK)
+	public ReportDTO process(@PathVariable("id") String id) {
+		Report report = reportRepository.findOne(id);
+		if (report == null) {
+			throw new ReportNotFound();
+		} else if (!report.isReady()) {
+			throw new ReportResultNotReady();
+		}
+		report.incVersion();
+		report.setStatus(QUEUED);
+		reportRepository.save(report);
+		return new ReportDTO(report);
+
+	}
+
 	@RequestMapping(value = "/schedule", method = POST)
 	@ResponseStatus(value = CREATED)
-	@Transactional
 	public ReportDTO schedule() {
 		Report report = new Report();
 		report.setStatus(QUEUED);

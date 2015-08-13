@@ -31,8 +31,8 @@ angular
         resolve: {
           result: function(ReportService, $route, $location, growl) {
             return ReportService.loadReportResult($route.current.pathParams.id)
-              .then({}, function() {
-                growl.error('Erro ao carregar o resultado');
+              .then({}, function(error) {
+                growl.error(error.message);
                 $location.path('/');
                 return [];
               });

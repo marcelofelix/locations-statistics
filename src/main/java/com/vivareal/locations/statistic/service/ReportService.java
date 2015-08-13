@@ -3,6 +3,8 @@ package com.vivareal.locations.statistic.service;
 import static com.vivareal.locations.statistic.model.Status.PROCESSING;
 import static com.vivareal.locations.statistic.model.Status.QUEUED;
 import static com.vivareal.locations.statistic.model.Status.READY;
+import static com.vivareal.locations.statistic.model.Status.REPROCESS;
+import static java.util.Arrays.asList;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 import java.io.BufferedWriter;
@@ -114,7 +116,7 @@ public class ReportService {
 
 	public void processReports(Report report) {
 		try {
-
+			updateStatus(report, PROCESSING);
 			Inmuebles inmuebles = new Inmuebles(storage.getPath(report.getFileName()));
 			Reports reports = factory.create();
 			reports.run(inmuebles);
@@ -138,10 +140,14 @@ public class ReportService {
 		try {
 			if (reportRepository.countByStatus(PROCESSING) == 0) {
 				log.info("Cheking for report queued");
-				Iterator<Report> reports = reportRepository.findByStatusOrderByIdAsc(QUEUED).iterator();
+				Iterator<Report> reports = reportRepository.findByStatusInOrderByIdAsc(asList(QUEUED, REPROCESS)).iterator();
 				if (reports.hasNext()) {
 					report = reports.next();
-					extractData(report);
+					if (QUEUED.equals(report.getStatus())) {
+						extractData(report);
+					} else {
+						processReports(report);
+					}
 				}
 			}
 		} catch (Exception e) {

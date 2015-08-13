@@ -9,7 +9,7 @@ app.factory('ReportService', function($http, $q) {
 				.then(function(result) {
 					return result.data;
 				}, function(error) {
-					return $q.reject(error);
+					return $q.reject(error.data);
 				});
 		},
 
@@ -18,14 +18,21 @@ app.factory('ReportService', function($http, $q) {
 				.then(function(result) {
 					return result.data;
 				}, function(error) {
-					return $q.reject(error);
+					return $q.reject(error.data);
 				});
 		},
 
 		schedule: function() {
 			return $http.post('report/schedule')
 				.then({}, function(error) {
-					return $q.reject(error);
+					return $q.reject(error.data);
+				});
+		},
+
+		process: function(id) {
+			return $http.post('report/' + id + '/process')
+				.then({}, function(error) {
+					return $q.reject(error.data);
 				});
 		}
 	};

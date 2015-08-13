@@ -13,7 +13,6 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -44,7 +43,6 @@ public class Storage {
 		}
 	}
 
-	@Async
 	public void upload(Report report) {
 		try {
 			PutObjectRequest request = new PutObjectRequest(bucketName, report.getFileName(), get(dir, report.getFileName()).toFile());

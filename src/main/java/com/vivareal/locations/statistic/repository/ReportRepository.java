@@ -11,7 +11,7 @@ public interface ReportRepository extends MongoRepository<Report, String> {
 
 	Collection<Report> findByStatus(Status queued);
 
-	Collection<Report> findByStatusOrderByIdAsc(Status status);
+	Collection<Report> findByStatusInOrderByIdAsc(Collection<Status> status);
 
 	int countByStatus(Status processing);
 

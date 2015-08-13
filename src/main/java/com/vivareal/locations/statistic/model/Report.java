@@ -24,6 +24,8 @@ public class Report {
 
 	private List<Node> result = new ArrayList<Node>();
 
+	private Integer version = 1;
+
 	public String getId() {
 		return id;
 	}
@@ -71,6 +73,23 @@ public class Report {
 				n.compareWith(node.get());
 			}
 		});
+
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
+	public boolean isFirstVersion() {
+		return version.equals(1);
+	}
+
+	public void incVersion() {
+		this.version++;
 
 	}
 

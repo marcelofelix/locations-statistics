@@ -8,7 +8,7 @@ app.factory('reportModel', function($http, ReportService, growl) {
 		loadReports: function() {
 			return ReportService.loadReports()
 				.then(function(data) {
-					that.reports = data;					
+					that.reports = data;
 					return data;
 				});
 		},
@@ -20,6 +20,13 @@ app.factory('reportModel', function($http, ReportService, growl) {
 					return that.loadReports();
 				}, function() {
 					growl.error('Não foi possível criar um relatório');
+				});
+		},
+
+		process: function(id) {
+			return ReportService.process(id)
+				.then({}, function() {
+					growl.error('Não foi possível processar o relatório');
 				});
 		}
 	};

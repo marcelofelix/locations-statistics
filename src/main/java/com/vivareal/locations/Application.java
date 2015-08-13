@@ -1,5 +1,7 @@
 package com.vivareal.locations;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -7,8 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.vivareal.locations.statistic.exception.HandlerException;
 import com.vivareal.locations.statistic.repository.ReportRepository;
 import com.vivareal.locations.statistic.service.DataExtractorFactory;
 
@@ -33,6 +37,16 @@ public class Application extends WebMvcConfigurerAdapter {
 	@Bean
 	public DataExtractorFactory dataExtractorFactory() {
 		return new DataExtractorFactory();
+	}
+
+	@Bean
+	public HandlerException handlerException() {
+		return new HandlerException();
+	}
+
+	@Override
+	public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
+		exceptionResolvers.add(handlerException());
 	}
 
 	@Bean
